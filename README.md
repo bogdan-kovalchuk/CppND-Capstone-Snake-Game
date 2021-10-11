@@ -28,6 +28,9 @@ TODO: Some description, class diagram and so on with pictures.
 3. Compile: `cmake .. && make`
 4. Run it: `./SnakeGame`.
 
+## Project specification
+
+The project specification indicates which rubric points were addressed and it indicates where in the code (i.e. files and line numbers) that the rubric points were addressed.
 
 ## CC Attribution-ShareAlike 4.0 International
 
