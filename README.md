@@ -32,6 +32,13 @@ TODO: Some description, class diagram and so on with pictures.
 
 The project specification indicates which rubric points were addressed and it indicates where in the code (i.e. files and line numbers) that the rubric points were addressed.
 
+* README (All Rubric Points REQUIRED)
+* Compiling and Testing (All Rubric Points REQUIRED)
+* Loops, Functions, I/O
+* Object Oriented Programming
+* Memory Management
+* Concurrency
+
 ## CC Attribution-ShareAlike 4.0 International
 
 
