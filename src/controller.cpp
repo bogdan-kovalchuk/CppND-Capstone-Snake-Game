@@ -11,7 +11,7 @@ void Controller::ChangeDirection(Snake &snake, Snake::Direction input,
   return;
 }
 
-void Controller::HandleInput(bool &running, Snake &snake) const
+void Controller::HandleInput(bool &running, bool &pause, Snake &snake) const
 {
   SDL_Event e;
   while (SDL_PollEvent(&e))
