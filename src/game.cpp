@@ -96,7 +96,7 @@ void Game::Update()
     PlaceFood();
     // Grow snake and increase speed.
     snake.GrowBody();
-    snake.speed += 0.02;
+    snake.speed += 0.005;
   }
 }
 
