@@ -35,6 +35,14 @@ Renderer::Renderer(const std::size_t screen_width,
     std::cerr << "Renderer could not be created.\n";
     std::cerr << "SDL_Error: " << SDL_GetError() << "\n";
   }
+
+  // Initialize PNG loading
+  int image_flag = IMG_INIT_PNG;
+  if (!(IMG_Init(image_flag) & image_flag))
+  {
+    std::cerr << "SDL_image could not initialize.\n";
+    std::cerr << "SDL_image Error: " << IMG_GetError() << "\n";
+  }
 }
 
 Renderer::~Renderer()
