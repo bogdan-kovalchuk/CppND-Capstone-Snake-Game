@@ -2,6 +2,7 @@
 #define RENDERER_H
 
 #include <vector>
+#include <memory>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "snake.h"
@@ -17,7 +18,7 @@ public:
   void UpdateWindowTitle(int score, int fps);
 
 private:
-  SDL_Window *sdl_window;
+  std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> sdl_window_;
   SDL_Renderer *sdl_renderer;
 
   const std::size_t screen_width;
