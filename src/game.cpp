@@ -34,7 +34,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       Update();
     }
 
-    renderer.Render(snake_, food);
+    renderer.Render(snake_, food_);
 
     frame_end = SDL_GetTicks();
 
@@ -68,12 +68,11 @@ void Game::PlaceFood()
   {
     x = random_w(engine);
     y = random_h(engine);
-    // Check that the location is not occupied by a snake item before placing
-    // food.
+    // Check that the location is not occupied by a snake item before placing food.
     if (!snake_.SnakeCell(x, y))
     {
-      food.x = x;
-      food.y = y;
+      food_.x = x;
+      food_.y = y;
       return;
     }
   }
@@ -90,7 +89,7 @@ void Game::Update()
   int new_y = static_cast<int>(snake_.head_y);
 
   // Check if there's food over here
-  if (food.x == new_x && food.y == new_y)
+  if (food_.x == new_x && food_.y == new_y)
   {
     score++;
     PlaceFood();
