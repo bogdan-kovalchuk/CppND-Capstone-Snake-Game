@@ -17,7 +17,7 @@ public:
   int GetSize() const;
 
 private:
-  Snake snake;
+  Snake snake_;
   SDL_Point food;
 
   std::random_device dev;
