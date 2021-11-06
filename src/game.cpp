@@ -4,9 +4,9 @@
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake_(grid_width, grid_height),
-      engine(dev()),
-      random_w(0, static_cast<int>(grid_width - 1)),
-      random_h(0, static_cast<int>(grid_height - 1))
+      engine_(dev_()),
+      random_w_(0, static_cast<int>(grid_width - 1)),
+      random_h_(0, static_cast<int>(grid_height - 1))
 {
   PlaceFood();
 }
@@ -66,8 +66,8 @@ void Game::PlaceFood()
   int x, y;
   while (true)
   {
-    x = random_w(engine);
-    y = random_h(engine);
+    x = random_w_(engine_);
+    y = random_h_(engine_);
     // Check that the location is not occupied by a snake item before placing food.
     if (!snake_.SnakeCell(x, y))
     {

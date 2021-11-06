@@ -20,10 +20,10 @@ private:
   Snake snake_;
   SDL_Point food_;
 
-  std::random_device dev;
-  std::mt19937 engine;
-  std::uniform_int_distribution<int> random_w;
-  std::uniform_int_distribution<int> random_h;
+  std::random_device dev_;
+  std::mt19937 engine_;
+  std::uniform_int_distribution<int> random_w_;
+  std::uniform_int_distribution<int> random_h_;
 
   int score{0};
 
