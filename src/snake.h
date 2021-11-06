@@ -16,8 +16,8 @@ public:
   };
 
   Snake(int grid_width, int grid_height)
-      : grid_width(grid_width),
-        grid_height(grid_height),
+      : grid_width_(grid_width),
+        grid_height_(grid_height),
         head_x(grid_width / 2),
         head_y(grid_height / 2) {}
 
@@ -39,9 +39,9 @@ private:
   void UpdateHead();
   void UpdateBody(SDL_Point &current_cell, SDL_Point &prev_cell);
 
-  bool growing{false};
-  int grid_width;
-  int grid_height;
+  bool growing_{false};
+  int grid_width_;
+  int grid_height_;
 };
 
 #endif
