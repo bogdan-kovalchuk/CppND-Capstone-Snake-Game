@@ -22,13 +22,20 @@ void Controller::HandleInput(bool &running, bool &pause, Snake &snake) const
     }
     else
     {
+      HandleMouseEvent(e);
       HandleKeyboardEvent(e, snake);
     }
   }
 }
 
+void Controller::HandleMouseEvent(const SDL_Event &e) const
+{
+  // Check if mouse event happened
+}
+
 void Controller::HandleKeyboardEvent(const SDL_Event &e, Snake &snake) const
 {
+  // Check if keyboard event happened
   if (e.type == SDL_KEYDOWN)
   {
     switch (e.key.keysym.sym)
