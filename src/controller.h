@@ -9,8 +9,8 @@ public:
     void HandleInput(bool &running, bool &pause, Snake &snake) const;
 
 private:
-    void ChangeDirection(Snake &snake, Snake::Direction input,
-                         Snake::Direction opposite) const;
+    void HandleKeyboardEvent(const SDL_Event &e, Snake &snake) const;
+    void ChangeDirection(Snake &snake, Snake::Direction input, Snake::Direction opposite) const;
 };
 
 #endif
