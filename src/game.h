@@ -3,9 +3,11 @@
 
 #include <random>
 #include <SDL2/SDL.h>
+
 #include "controller.h"
 #include "renderer.h"
 #include "snake.h"
+#include "button.h"
 
 class Game
 {
@@ -19,6 +21,7 @@ public:
 private:
   Snake snake_;
   SDL_Point food_;
+  Button play_pause_button_;
 
   std::random_device dev_;
   std::mt19937 engine_;
