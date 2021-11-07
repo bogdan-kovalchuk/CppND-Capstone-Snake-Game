@@ -51,7 +51,7 @@ Renderer::~Renderer()
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food)
+void Renderer::Render(Snake const snake, SDL_Point const &food, Button &play_pause_button)
 {
   SDL_Rect block;
   block.w = screen_width_ / grid_width_;
@@ -89,6 +89,9 @@ void Renderer::Render(Snake const snake, SDL_Point const &food)
   }
   SDL_RenderFillRect(sdl_renderer_, &block);
 
+  // Render play/pause button
+  play_pause_button.Render(sdl_renderer_);
+  
   // Update Screen
   SDL_RenderPresent(sdl_renderer_);
 }

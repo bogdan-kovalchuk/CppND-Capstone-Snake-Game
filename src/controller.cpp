@@ -42,8 +42,6 @@ void Controller::HandleMouseEvent(const SDL_Event &e, Button &play_pause_button)
     // Check if mouse is in button
     bool inside = true;
 
-    ButtonState buttonState;
-
     // Mouse is left of the button
     // if (x < mPosition.x)
     // {
@@ -65,17 +63,10 @@ void Controller::HandleMouseEvent(const SDL_Event &e, Button &play_pause_button)
     //   inside = false;
     // }
 
-    // Mouse is outside button
+    // Mouse is inside button
     if (inside)
     {
-      if (buttonState == NORMAL)
-      {
-        buttonState = PRESSED;
-      }
-      else
-      {
-        buttonState = NORMAL;
-      }
+      play_pause_button.ChangeState();
     }
   }
 }

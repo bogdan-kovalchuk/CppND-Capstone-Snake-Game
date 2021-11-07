@@ -34,7 +34,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
       Update();
     }
 
-    renderer.Render(snake_, food_);
+    renderer.Render(snake_, food_, play_pause_button_);
 
     frame_end = SDL_GetTicks();
 
