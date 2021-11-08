@@ -31,8 +31,10 @@ public:
     void ChangeState();
 
     ButtonState GetState() const;
+    ButtonDimensions GetButtonDimensions() const;
 
     void SetPosition(int x, int y);
+    SDL_Point GetPosition() const;
 
     // delete copy constructor, copy assigment operator
     // move constractor and move assigment operator
@@ -49,7 +51,7 @@ private:
     SDL_Point position_ = {15, 15};
 
     ButtonState button_state_ = NORMAL;
-    ButtonDimensions button_dimensions = {0, 0};
+    ButtonDimensions button_dimensions_ = {0, 0};
 
     // Surfaces to create textures for play/pause button
     SDL_Surface *surface_normal_ = nullptr;

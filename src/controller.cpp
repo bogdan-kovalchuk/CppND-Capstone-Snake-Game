@@ -39,32 +39,19 @@ void Controller::HandleMouseEvent(const SDL_Event &e, Button &play_pause_button)
     int x, y;
     SDL_GetMouseState(&x, &y);
 
-    // Check if mouse is in button
-    bool inside = true;
+    SDL_Point button_position = play_pause_button.GetPosition();
+    ButtonDimensions button_dimentions = play_pause_button.GetButtonDimensions();
 
-    // Mouse is left of the button
-    // if (x < mPosition.x)
-    // {
-    //   inside = false;
-    // }
-    // // Mouse is right of the button
-    // else if (x > mPosition.x + BUTTON_WIDTH)
-    // {
-    //   inside = false;
-    // }
-    // // Mouse above the button
-    // else if (y < mPosition.y)
-    // {
-    //   inside = false;
-    // }
-    // // Mouse below the button
-    // else if (y > mPosition.y + BUTTON_HEIGHT)
-    // {
-    //   inside = false;
-    // }
+    float button_center_x = button_position.x + button_dimentions.w / 2.0;
+    float button_center_y = button_position.y + button_dimentions.h / 2.0;
 
-    // Mouse is inside button
-    if (inside)
+    // Distance from center of button to mouse position
+    float dist = sqrt(pow((button_center_x - x), 2) + pow((button_center_y - y), 2));
+
+    // Assume that button is round (special case of this project)
+    // Check if distance between center of the button and mouse position is
+    // less than radius (w/2 or h/2) so that check if mouse is in button
+    if (dist <= button_dimentions.w / 2.0)
     {
       play_pause_button.ChangeState();
     }

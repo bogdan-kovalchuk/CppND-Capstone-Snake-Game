@@ -21,15 +21,15 @@ Button::Button()
     else
     {
         // Get button dimensions from image
-        button_dimensions.h = surface_normal_->w;
-        button_dimensions.w = surface_normal_->h;
+        button_dimensions_.h = surface_normal_->w;
+        button_dimensions_.w = surface_normal_->h;
     }
 }
 
 void Button::Render(SDL_Renderer *sdl_renderer)
 {
     // Rendering space for button
-    SDL_Rect dstrect = {position_.x, position_.y, button_dimensions.h, button_dimensions.w};
+    SDL_Rect dstrect = {position_.x, position_.y, button_dimensions_.h, button_dimensions_.w};
 
     SDL_Texture *texture = nullptr;
     if (button_state_ == NORMAL)
@@ -61,10 +61,20 @@ ButtonState Button::GetState() const
     return button_state_;
 }
 
+ButtonDimensions Button::GetButtonDimensions() const
+{
+    return button_dimensions_;
+}
+
 void Button::SetPosition(int x, int y)
 {
     position_.x = x;
     position_.y = y;
+}
+
+SDL_Point Button::GetPosition() const
+{
+    return position_;
 }
 
 void Button::LoadImageFromFile(std::string paths_to_image, SDL_Surface *&loaded_surface)
