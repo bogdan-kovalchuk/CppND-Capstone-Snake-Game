@@ -3,7 +3,6 @@
 
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-
 #include <string>
 #include <vector>
 
@@ -13,10 +12,16 @@ enum ButtonState
     PRESSED = 1
 };
 
+struct ButtonDimensions
+{
+    int w;
+    int h;
+};
+
 class Button
 {
 public:
-    Button() {}
+    Button(std::vector<std::string> images);
     ~Button() {}
 
     void Render(SDL_Renderer *sdl_renderer);
@@ -33,13 +38,18 @@ public:
     Button &operator=(Button &&) = delete;
 
 private:
-    void LoadImageFromFile(std::string paths_to_image, SDL_Surface *loaded_surface);
+    // Load images for play/pause (normal/pressed) state of button
+    void LoadImageFromFile(std::string paths_to_image, SDL_Surface *&loaded_surface);
 
     // Top left position
     SDL_Point position_;
 
-    SDL_Surface *surface_normal_ = nullptr;
-    SDL_Surface *surface_pressed_ = nullptr;
+    ButtonDimensions button_dimensions;
+
+    // Surfaces to create textures for play/pause button
+    SDL_Surface *surface_normal_;
+    SDL_Surface *surface_pressed_;
+
     ButtonState button_state_ = NORMAL;
 };
 
