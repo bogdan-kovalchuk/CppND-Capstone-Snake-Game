@@ -16,7 +16,6 @@ file(GLOB GAME_SOURCE_FILES "src/*.cpp")
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} src)
-include_directories(include/rapidjson)
 
 add_executable(SnakeGame ${GAME_SOURCE_FILES})
 string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)

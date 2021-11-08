@@ -12,6 +12,9 @@ int main()
   constexpr std::size_t kGridWidth{32};
   constexpr std::size_t kGridHeight{32};
 
+  std::vector<std::string> images = {"/home/s1000239/Documents/Study/Cpp/CppND/CppND-Capstone-Snake-Game/assets/buttons/play.png",
+                                     "/home/s1000239/Documents/Study/Cpp/CppND/CppND-Capstone-Snake-Game/assets/buttons/pause.png"};
+
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
   Game game(kGridWidth, kGridHeight, images);
