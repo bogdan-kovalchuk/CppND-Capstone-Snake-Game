@@ -2,16 +2,13 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 
-Game::Game(std::size_t grid_width, std::size_t grid_height, std::vector<std::string> images)
+Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake_(grid_width, grid_height),
-      play_pause_button_(images),
       engine_(dev_()),
       random_w_(0, static_cast<int>(grid_width - 1)),
       random_h_(0, static_cast<int>(grid_height - 1))
 {
   PlaceFood();
-  // TODO: change hardcoded values
-  play_pause_button_.SetPosition(0, 0);
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -23,16 +20,15 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   Uint32 frame_duration;
   int frame_count = 0;
   bool running = true;
-  bool pause = false;
 
   while (running)
   {
     frame_start = SDL_GetTicks();
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, pause, snake_, play_pause_button_);
+    controller.HandleInput(running, snake_, play_pause_button_);
 
-    if (!pause)
+    if (play_pause_button_.GetState() == NORMAL)
     {
       Update();
     }

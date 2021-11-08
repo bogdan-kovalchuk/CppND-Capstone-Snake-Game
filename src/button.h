@@ -5,6 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <string>
 #include <vector>
+#include <iostream>
 
 enum ButtonState
 {
@@ -21,12 +22,15 @@ struct ButtonDimensions
 class Button
 {
 public:
-    Button(std::vector<std::string> images);
+    Button();
     ~Button() {}
 
     void Render(SDL_Renderer *sdl_renderer);
 
+    // Change the state when the button is pressed
     void ChangeState();
+
+    ButtonState GetState() const;
 
     void SetPosition(int x, int y);
 
@@ -41,16 +45,15 @@ private:
     // Load images for play/pause (normal/pressed) state of button
     void LoadImageFromFile(std::string paths_to_image, SDL_Surface *&loaded_surface);
 
-    // Top left position
-    SDL_Point position_;
-
-    ButtonDimensions button_dimensions;
-
-    // Surfaces to create textures for play/pause button
-    SDL_Surface *surface_normal_;
-    SDL_Surface *surface_pressed_;
+    // Top left position set by default
+    SDL_Point position_ = {15, 15};
 
     ButtonState button_state_ = NORMAL;
+    ButtonDimensions button_dimensions = {0, 0};
+
+    // Surfaces to create textures for play/pause button
+    SDL_Surface *surface_normal_ = nullptr;
+    SDL_Surface *surface_pressed_ = nullptr;
 };
 
 #endif

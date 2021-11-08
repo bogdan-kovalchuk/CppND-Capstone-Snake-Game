@@ -7,7 +7,7 @@
 class Controller
 {
 public:
-    void HandleInput(bool &running, bool &pause, Snake &snake, Button &play_pause_button) const;
+    void HandleInput(bool &running, Snake &snake, Button &play_pause_button) const;
 
 private:
     void HandleMouseEvent(const SDL_Event &e, Button &play_pause_button) const;

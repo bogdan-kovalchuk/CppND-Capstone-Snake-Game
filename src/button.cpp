@@ -1,10 +1,10 @@
-#include <iostream>
-#include <filesystem>
-
 #include "button.h"
 
-Button::Button(std::vector<std::string> paths_to_images)
+Button::Button()
 {
+    std::vector<std::string> paths_to_images = {"assets/buttons/play.png",
+                                                "assets/buttons/pause.png"};
+
     LoadImageFromFile(paths_to_images[NORMAL], surface_normal_);
     LoadImageFromFile(paths_to_images[PRESSED], surface_pressed_);
 
@@ -16,10 +16,11 @@ Button::Button(std::vector<std::string> paths_to_images)
     else if (surface_normal_->w != surface_pressed_->w ||
              surface_normal_->h != surface_pressed_->h)
     {
+        std::cerr << "Dimensions of play and pause images are different!\n";
     }
     else
     {
-        // Get button dimensions
+        // Get button dimensions from image
         button_dimensions.h = surface_normal_->w;
         button_dimensions.w = surface_normal_->h;
     }
@@ -28,7 +29,7 @@ Button::Button(std::vector<std::string> paths_to_images)
 void Button::Render(SDL_Renderer *sdl_renderer)
 {
     // Rendering space for button
-    SDL_Rect dstrect = {position_.x, position_.y, 64, 64};
+    SDL_Rect dstrect = {position_.x, position_.y, button_dimensions.h, button_dimensions.w};
 
     SDL_Texture *texture = nullptr;
     if (button_state_ == NORMAL)
@@ -53,6 +54,11 @@ void Button::ChangeState()
     {
         button_state_ = NORMAL;
     }
+}
+
+ButtonState Button::GetState() const
+{
+    return button_state_;
 }
 
 void Button::SetPosition(int x, int y)
