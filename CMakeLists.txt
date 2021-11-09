@@ -9,6 +9,8 @@ set(CMAKE_CXX_FLAGS, "${CXX_FLAGS}")
 
 project(SnakeGame)
 
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 file(GLOB GAME_SOURCE_FILES "src/*.cpp")
