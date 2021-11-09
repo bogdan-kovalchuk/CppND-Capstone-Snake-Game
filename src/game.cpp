@@ -28,7 +28,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake_, play_pause_button_);
 
-    if (play_pause_button_.GetState() == NORMAL)
+    if (play_pause_button_.GetState() == PRESSED)
     {
       Update();
     }
