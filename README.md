@@ -19,7 +19,7 @@ To satisfy the Rubric Points, new functionality was added, such as a start/pause
 * SDL2_image >= 2.0
   * All installation instructions can be found [here](https://www.libsdl.org/projects/SDL_image/docs/index.html)
   >Note that for Linux, an `apt` or `apt-get` installation is preferred to building from source: 
-  `sudo apt-get install libsdl2-image-2.0-0-dev`
+  `sudo apt-get install libsdl2-image-dev`
 * gcc/g++ >= 5.4
   * Linux: gcc / g++ is installed by default on most Linux distros
   * Mac: same deal as make - [install Xcode command line tools](https://developer.apple.com/xcode/features/)
