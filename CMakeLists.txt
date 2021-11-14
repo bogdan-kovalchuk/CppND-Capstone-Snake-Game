@@ -22,3 +22,8 @@ include_directories(${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} src)
 add_executable(SnakeGame ${GAME_SOURCE_FILES})
 string(STRIP ${SDL2_LIBRARIES} SDL2_LIBRARIES)
 target_link_libraries(SnakeGame ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES})
+
+option(BUILD_TESTS "Build focused tests without SDL" OFF)
+if(BUILD_TESTS)
+    add_subdirectory(tests)
+endif()
