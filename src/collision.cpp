@@ -12,6 +12,12 @@ bool CheckSelfCollisionLinear(GridPoint head, const std::vector<GridPoint> &body
     return false;
 }
 
+bool CheckSelfCollisionSet(GridPoint head, const std::vector<GridPoint> &body)
+{
+    std::unordered_set<GridPoint, GridPointHash> occupied(body.begin(), body.end());
+    return occupied.count(head) > 0;
+}
+
 bool CheckFoodCollision(GridPoint head, GridPoint food)
 {
     return head.x == food.x && head.y == food.y;
