@@ -6,6 +6,7 @@ void test_self_collision_no_body()
     GridPoint head{5, 5};
     std::vector<GridPoint> body = {};
     ASSERT_FALSE(CheckSelfCollisionLinear(head, body));
+    ASSERT_FALSE(CheckSelfCollisionSet(head, body));
 }
 
 void test_self_collision_single_segment_no_hit()
@@ -13,6 +14,7 @@ void test_self_collision_single_segment_no_hit()
     GridPoint head{5, 5};
     std::vector<GridPoint> body = {{3, 3}};
     ASSERT_FALSE(CheckSelfCollisionLinear(head, body));
+    ASSERT_FALSE(CheckSelfCollisionSet(head, body));
 }
 
 void test_self_collision_single_segment_hit()
@@ -20,6 +22,7 @@ void test_self_collision_single_segment_hit()
     GridPoint head{5, 5};
     std::vector<GridPoint> body = {{5, 5}};
     ASSERT_TRUE(CheckSelfCollisionLinear(head, body));
+    ASSERT_TRUE(CheckSelfCollisionSet(head, body));
 }
 
 void test_self_collision_multiple_segments()
@@ -27,6 +30,7 @@ void test_self_collision_multiple_segments()
     GridPoint head{5, 5};
     std::vector<GridPoint> body = {{3, 3}, {4, 4}, {5, 5}, {6, 6}};
     ASSERT_TRUE(CheckSelfCollisionLinear(head, body));
+    ASSERT_TRUE(CheckSelfCollisionSet(head, body));
 }
 
 void test_self_collision_multiple_segments_no_hit()
@@ -34,6 +38,7 @@ void test_self_collision_multiple_segments_no_hit()
     GridPoint head{5, 5};
     std::vector<GridPoint> body = {{1, 1}, {2, 2}, {3, 3}, {4, 4}};
     ASSERT_FALSE(CheckSelfCollisionLinear(head, body));
+    ASSERT_FALSE(CheckSelfCollisionSet(head, body));
 }
 
 void test_self_collision_head_at_tail()
@@ -41,6 +46,38 @@ void test_self_collision_head_at_tail()
     GridPoint head{0, 0};
     std::vector<GridPoint> body = {{1, 0}, {2, 0}, {0, 0}};
     ASSERT_TRUE(CheckSelfCollisionLinear(head, body));
+    ASSERT_TRUE(CheckSelfCollisionSet(head, body));
+}
+
+void test_comparison_both_agree_on_empty()
+{
+    GridPoint head{0, 0};
+    std::vector<GridPoint> body = {};
+    ASSERT_EQ(CheckSelfCollisionLinear(head, body),
+              CheckSelfCollisionSet(head, body));
+}
+
+void test_comparison_both_agree_on_large_body()
+{
+    std::vector<GridPoint> body;
+    for (int i = 0; i < 100; ++i)
+    {
+        body.push_back({i, i});
+    }
+    GridPoint head_miss{50, 51};
+    GridPoint head_hit{50, 50};
+    ASSERT_EQ(CheckSelfCollisionLinear(head_miss, body),
+              CheckSelfCollisionSet(head_miss, body));
+    ASSERT_EQ(CheckSelfCollisionLinear(head_hit, body),
+              CheckSelfCollisionSet(head_hit, body));
+}
+
+void test_comparison_both_agree_on_duplicate_segments()
+{
+    GridPoint head{3, 3};
+    std::vector<GridPoint> body = {{1, 1}, {3, 3}, {3, 3}, {2, 2}};
+    ASSERT_EQ(CheckSelfCollisionLinear(head, body),
+              CheckSelfCollisionSet(head, body));
 }
 
 void test_food_collision_hit()
@@ -101,6 +138,9 @@ int main()
     test_self_collision_multiple_segments();
     test_self_collision_multiple_segments_no_hit();
     test_self_collision_head_at_tail();
+    test_comparison_both_agree_on_empty();
+    test_comparison_both_agree_on_large_body();
+    test_comparison_both_agree_on_duplicate_segments();
     test_food_collision_hit();
     test_food_collision_miss();
     test_wall_collision_inside();
