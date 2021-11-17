@@ -130,6 +130,78 @@ void test_wall_collision_negative()
     ASSERT_TRUE(CheckWallCollision(head, 10, 10));
 }
 
+void test_wall_collision_negative_y()
+{
+    GridPoint head{5, -1};
+    ASSERT_TRUE(CheckWallCollision(head, 10, 10));
+}
+
+void test_wall_collision_zero_grid()
+{
+    GridPoint head{0, 0};
+    ASSERT_TRUE(CheckWallCollision(head, 0, 0));
+}
+
+void test_wall_collision_negative_grid()
+{
+    GridPoint head{0, 0};
+    ASSERT_TRUE(CheckWallCollision(head, -5, 10));
+}
+
+void test_is_valid_grid_positive()
+{
+    ASSERT_TRUE(IsValidGrid(10, 10));
+    ASSERT_TRUE(IsValidGrid(1, 1));
+}
+
+void test_is_valid_grid_zero()
+{
+    ASSERT_FALSE(IsValidGrid(0, 10));
+    ASSERT_FALSE(IsValidGrid(10, 0));
+    ASSERT_FALSE(IsValidGrid(0, 0));
+}
+
+void test_is_valid_grid_negative()
+{
+    ASSERT_FALSE(IsValidGrid(-1, 10));
+    ASSERT_FALSE(IsValidGrid(10, -1));
+}
+
+void test_is_on_grid_valid_inside()
+{
+    ASSERT_TRUE(IsOnGrid({5, 5}, 10, 10));
+    ASSERT_TRUE(IsOnGrid({0, 0}, 10, 10));
+    ASSERT_TRUE(IsOnGrid({9, 9}, 10, 10));
+}
+
+void test_is_on_grid_valid_outside()
+{
+    ASSERT_FALSE(IsOnGrid({10, 5}, 10, 10));
+    ASSERT_FALSE(IsOnGrid({5, 10}, 10, 10));
+    ASSERT_FALSE(IsOnGrid({-1, 5}, 10, 10));
+}
+
+void test_is_on_grid_invalid_dimensions()
+{
+    ASSERT_FALSE(IsOnGrid({0, 0}, 0, 0));
+    ASSERT_FALSE(IsOnGrid({0, 0}, -1, 10));
+}
+
+void test_self_collision_large_coordinates()
+{
+    GridPoint head{1000, 2000};
+    std::vector<GridPoint> body = {{1000, 2000}};
+    ASSERT_TRUE(CheckSelfCollisionLinear(head, body));
+    ASSERT_TRUE(CheckSelfCollisionSet(head, body));
+}
+
+void test_food_collision_negative_coords()
+{
+    GridPoint head{-3, -7};
+    GridPoint food{-3, -7};
+    ASSERT_TRUE(CheckFoodCollision(head, food));
+}
+
 int main()
 {
     test_self_collision_no_body();
@@ -149,5 +221,16 @@ int main()
     test_wall_collision_past_right();
     test_wall_collision_past_bottom();
     test_wall_collision_negative();
+    test_wall_collision_negative_y();
+    test_wall_collision_zero_grid();
+    test_wall_collision_negative_grid();
+    test_is_valid_grid_positive();
+    test_is_valid_grid_zero();
+    test_is_valid_grid_negative();
+    test_is_on_grid_valid_inside();
+    test_is_on_grid_valid_outside();
+    test_is_on_grid_invalid_dimensions();
+    test_self_collision_large_coordinates();
+    test_food_collision_negative_coords();
     return test_summary();
 }
