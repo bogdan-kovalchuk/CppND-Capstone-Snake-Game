@@ -34,4 +34,8 @@ bool CheckFoodCollision(GridPoint head, GridPoint food);
 
 bool CheckWallCollision(GridPoint head, int grid_width, int grid_height);
 
+bool IsValidGrid(int grid_width, int grid_height);
+
+bool IsOnGrid(GridPoint p, int grid_width, int grid_height);
+
 #endif
