@@ -22,4 +22,23 @@ private:
     PauseState state_;
 };
 
+class TickGuard
+{
+public:
+    explicit TickGuard(int min_ticks_between_toggles = 3);
+
+    void RequestToggle();
+    void Tick();
+
+    PauseState GetState() const;
+    bool IsRunning() const;
+    bool IsPaused() const;
+    int GetCooldown() const;
+
+private:
+    PauseStateMachine machine_;
+    int min_ticks_;
+    int cooldown_;
+};
+
 #endif
