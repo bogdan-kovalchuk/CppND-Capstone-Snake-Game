@@ -60,6 +60,67 @@ void test_get_state_returns_enum()
               static_cast<int>(PauseState::kRunning));
 }
 
+void test_tickguard_initial_paused()
+{
+    TickGuard tg(3);
+    ASSERT_TRUE(tg.IsPaused());
+    ASSERT_FALSE(tg.IsRunning());
+    ASSERT_EQ(tg.GetCooldown(), 0);
+}
+
+void test_tickguard_toggle_with_cooldown()
+{
+    TickGuard tg(3);
+    tg.RequestToggle();
+    ASSERT_TRUE(tg.IsRunning());
+    ASSERT_EQ(tg.GetCooldown(), 3);
+    tg.RequestToggle();
+    ASSERT_TRUE(tg.IsRunning());
+    ASSERT_EQ(tg.GetCooldown(), 3);
+}
+
+void test_tickguard_cooldown_decrements()
+{
+    TickGuard tg(3);
+    tg.RequestToggle();
+    ASSERT_EQ(tg.GetCooldown(), 3);
+    tg.Tick();
+    ASSERT_EQ(tg.GetCooldown(), 2);
+    tg.Tick();
+    ASSERT_EQ(tg.GetCooldown(), 1);
+    tg.Tick();
+    ASSERT_EQ(tg.GetCooldown(), 0);
+}
+
+void test_tickguard_toggle_after_cooldown()
+{
+    TickGuard tg(2);
+    tg.RequestToggle();
+    ASSERT_TRUE(tg.IsRunning());
+    tg.Tick();
+    tg.Tick();
+    ASSERT_EQ(tg.GetCooldown(), 0);
+    tg.RequestToggle();
+    ASSERT_TRUE(tg.IsPaused());
+    ASSERT_EQ(tg.GetCooldown(), 2);
+}
+
+void test_tickguard_no_negative_cooldown()
+{
+    TickGuard tg(1);
+    tg.Tick();
+    tg.Tick();
+    tg.Tick();
+    ASSERT_EQ(tg.GetCooldown(), 0);
+}
+
+void test_tickguard_default_cooldown()
+{
+    TickGuard tg;
+    tg.RequestToggle();
+    ASSERT_EQ(tg.GetCooldown(), 3);
+}
+
 int main()
 {
     test_initial_state_is_paused();
@@ -68,5 +129,11 @@ int main()
     test_multiple_toggles();
     test_toggle_preserves_running_state();
     test_get_state_returns_enum();
+    test_tickguard_initial_paused();
+    test_tickguard_toggle_with_cooldown();
+    test_tickguard_cooldown_decrements();
+    test_tickguard_toggle_after_cooldown();
+    test_tickguard_no_negative_cooldown();
+    test_tickguard_default_cooldown();
     return test_summary();
 }
