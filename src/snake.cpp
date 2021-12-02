@@ -1,4 +1,5 @@
 #include "snake.h"
+#include "collision.h"
 #include <cmath>
 #include <iostream>
 
@@ -64,12 +65,16 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell)
   }
 
   // Check if the snake has died.
-  for (auto const &item : body)
+  std::vector<GridPoint> body_points;
+  body_points.reserve(body.size());
+  for (const auto &seg : body)
   {
-    if (current_head_cell.x == item.x && current_head_cell.y == item.y)
-    {
-      alive = false;
-    }
+    body_points.push_back({seg.x, seg.y});
+  }
+  if (CheckSelfCollisionLinear({current_head_cell.x, current_head_cell.y},
+                               body_points))
+  {
+    alive = false;
   }
 }
 

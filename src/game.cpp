@@ -20,6 +20,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   Uint32 frame_duration;
   int frame_count = 0;
   bool running = true;
+  ButtonState prev_button_state = play_pause_button_.GetState();
 
   while (running)
   {
@@ -28,7 +29,16 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake_, play_pause_button_);
 
-    if (play_pause_button_.GetState() == PRESSED)
+    ButtonState current_button_state = play_pause_button_.GetState();
+    if (current_button_state != prev_button_state)
+    {
+      pause_state_.RequestToggle();
+      prev_button_state = current_button_state;
+    }
+
+    pause_state_.Tick();
+
+    if (pause_state_.IsRunning())
     {
       Update();
     }
