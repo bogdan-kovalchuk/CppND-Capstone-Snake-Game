@@ -121,6 +121,80 @@ void test_tickguard_default_cooldown()
     ASSERT_EQ(tg.GetCooldown(), 3);
 }
 
+void test_pause_state_reset()
+{
+    PauseStateMachine sm;
+    sm.Toggle();
+    ASSERT_TRUE(sm.IsRunning());
+    sm.Reset();
+    ASSERT_TRUE(sm.IsPaused());
+    ASSERT_FALSE(sm.IsRunning());
+}
+
+void test_tickguard_reset()
+{
+    TickGuard tg(5);
+    tg.RequestToggle();
+    ASSERT_TRUE(tg.IsRunning());
+    ASSERT_EQ(tg.GetCooldown(), 5);
+    tg.Tick();
+    tg.Tick();
+    ASSERT_EQ(tg.GetCooldown(), 3);
+    tg.Reset();
+    ASSERT_TRUE(tg.IsPaused());
+    ASSERT_EQ(tg.GetCooldown(), 0);
+}
+
+void test_tickguard_zero_cooldown()
+{
+    TickGuard tg(0);
+    tg.RequestToggle();
+    ASSERT_TRUE(tg.IsRunning());
+    ASSERT_EQ(tg.GetCooldown(), 0);
+    tg.RequestToggle();
+    ASSERT_TRUE(tg.IsPaused());
+}
+
+void test_tickguard_negative_cooldown_clamped()
+{
+    TickGuard tg(-5);
+    tg.RequestToggle();
+    ASSERT_TRUE(tg.IsRunning());
+    ASSERT_EQ(tg.GetCooldown(), 0);
+    tg.RequestToggle();
+    ASSERT_TRUE(tg.IsPaused());
+}
+
+void test_pause_state_many_toggles()
+{
+    PauseStateMachine sm;
+    for (int i = 0; i < 1000; ++i)
+    {
+        sm.Toggle();
+    }
+    ASSERT_TRUE(sm.IsPaused());
+    sm.Toggle();
+    ASSERT_TRUE(sm.IsRunning());
+    sm.Reset();
+    ASSERT_TRUE(sm.IsPaused());
+}
+
+void test_tickguard_reset_during_cooldown()
+{
+    TickGuard tg(10);
+    tg.RequestToggle();
+    tg.Tick();
+    tg.Tick();
+    tg.Tick();
+    ASSERT_EQ(tg.GetCooldown(), 7);
+    tg.Reset();
+    ASSERT_EQ(tg.GetCooldown(), 0);
+    ASSERT_TRUE(tg.IsPaused());
+    tg.RequestToggle();
+    ASSERT_TRUE(tg.IsRunning());
+    ASSERT_EQ(tg.GetCooldown(), 10);
+}
+
 int main()
 {
     test_initial_state_is_paused();
@@ -135,5 +209,11 @@ int main()
     test_tickguard_toggle_after_cooldown();
     test_tickguard_no_negative_cooldown();
     test_tickguard_default_cooldown();
+    test_pause_state_reset();
+    test_tickguard_reset();
+    test_tickguard_zero_cooldown();
+    test_tickguard_negative_cooldown_clamped();
+    test_pause_state_many_toggles();
+    test_tickguard_reset_during_cooldown();
     return test_summary();
 }
