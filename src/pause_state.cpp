@@ -17,6 +17,11 @@ void PauseStateMachine::Toggle()
     }
 }
 
+void PauseStateMachine::Reset()
+{
+    state_ = PauseState::kPaused;
+}
+
 PauseState PauseStateMachine::GetState() const
 {
     return state_;
@@ -33,7 +38,8 @@ bool PauseStateMachine::IsPaused() const
 }
 
 TickGuard::TickGuard(int min_ticks_between_toggles)
-    : min_ticks_(min_ticks_between_toggles), cooldown_(0)
+    : min_ticks_(min_ticks_between_toggles > 0 ? min_ticks_between_toggles : 0),
+      cooldown_(0)
 {
 }
 
@@ -52,6 +58,12 @@ void TickGuard::Tick()
     {
         cooldown_--;
     }
+}
+
+void TickGuard::Reset()
+{
+    machine_.Reset();
+    cooldown_ = 0;
 }
 
 PauseState TickGuard::GetState() const

@@ -13,6 +13,7 @@ public:
     PauseStateMachine();
 
     void Toggle();
+    void Reset();
 
     PauseState GetState() const;
     bool IsRunning() const;
@@ -29,6 +30,7 @@ public:
 
     void RequestToggle();
     void Tick();
+    void Reset();
 
     PauseState GetState() const;
     bool IsRunning() const;
