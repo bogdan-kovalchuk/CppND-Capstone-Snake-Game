@@ -17,6 +17,13 @@ add_executable(test_pause_state
 )
 target_include_directories(test_pause_state PRIVATE ../src ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_executable(test_direction_rules
+    test_direction_rules.cpp
+    ../src/direction_rules.cpp
+)
+target_include_directories(test_direction_rules PRIVATE ../src ${CMAKE_CURRENT_SOURCE_DIR})
+
 enable_testing()
 add_test(NAME CollisionTests COMMAND test_collision)
 add_test(NAME PauseStateTests COMMAND test_pause_state)
+add_test(NAME DirectionRulesTests COMMAND test_direction_rules)
