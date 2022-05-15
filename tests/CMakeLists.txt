@@ -23,7 +23,14 @@ add_executable(test_direction_rules
 )
 target_include_directories(test_direction_rules PRIVATE ../src ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_executable(test_growth_tracker
+    test_growth_tracker.cpp
+    ../src/growth_tracker.cpp
+)
+target_include_directories(test_growth_tracker PRIVATE ../src ${CMAKE_CURRENT_SOURCE_DIR})
+
 enable_testing()
 add_test(NAME CollisionTests COMMAND test_collision)
 add_test(NAME PauseStateTests COMMAND test_pause_state)
 add_test(NAME DirectionRulesTests COMMAND test_direction_rules)
+add_test(NAME GrowthTrackerTests COMMAND test_growth_tracker)
