@@ -29,8 +29,16 @@ add_executable(test_growth_tracker
 )
 target_include_directories(test_growth_tracker PRIVATE ../src ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_executable(test_food_safety
+    test_food_safety.cpp
+    ../src/food_safety.cpp
+    ../src/collision.cpp
+)
+target_include_directories(test_food_safety PRIVATE ../src ${CMAKE_CURRENT_SOURCE_DIR})
+
 enable_testing()
 add_test(NAME CollisionTests COMMAND test_collision)
 add_test(NAME PauseStateTests COMMAND test_pause_state)
 add_test(NAME DirectionRulesTests COMMAND test_direction_rules)
 add_test(NAME GrowthTrackerTests COMMAND test_growth_tracker)
+add_test(NAME FoodSafetyTests COMMAND test_food_safety)
