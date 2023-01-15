@@ -17,6 +17,10 @@ void UpdateGuard::SetAlive(bool alive)
 void UpdateGuard::SetPaused(bool paused)
 {
     paused_ = paused;
+    if (paused_)
+    {
+        pending_ = false;
+    }
 }
 
 void UpdateGuard::RequestUpdate()

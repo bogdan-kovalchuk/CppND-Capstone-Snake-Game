@@ -106,6 +106,17 @@ void test_multiple_requests_while_running()
     ASSERT_FALSE(ug.HasPending());
 }
 
+void test_pause_clears_pending()
+{
+    UpdateGuard ug;
+    ug.SetPaused(false);
+    ug.RequestUpdate();
+    ASSERT_TRUE(ug.HasPending());
+    ug.SetPaused(true);
+    ASSERT_FALSE(ug.HasPending());
+    ASSERT_FALSE(ug.ShouldUpdate());
+}
+
 int main()
 {
     test_initial_state();
@@ -118,5 +129,6 @@ int main()
     test_reset_restores_initial();
     test_resume_after_pause();
     test_multiple_requests_while_running();
+    test_pause_clears_pending();
     return test_summary();
 }
