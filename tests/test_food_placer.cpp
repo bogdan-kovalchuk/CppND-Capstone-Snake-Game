@@ -87,6 +87,49 @@ void test_deterministic_repeat_produces_same_result()
     ASSERT_EQ(out_a.y, out_b.y);
 }
 
+void test_full_board_various_sizes()
+{
+    std::vector<GridPoint> body_1x1 = {{0, 0}};
+    GridPoint out{};
+    ASSERT_FALSE(SelectFoodPosition(out, 1, 1, body_1x1, MakeSequenceFn({0}), MakeSequenceFn({0}), 2));
+
+    std::vector<GridPoint> body_2x1 = {{0, 0}, {1, 0}};
+    ASSERT_FALSE(SelectFoodPosition(out, 2, 1, body_2x1, MakeSequenceFn({0}), MakeSequenceFn({0}), 2));
+
+    std::vector<GridPoint> body_almost_full;
+    for (int y = 0; y < 3; ++y)
+    {
+        for (int x = 0; x < 3; ++x)
+        {
+            if (!(x == 2 && y == 2))
+            {
+                body_almost_full.push_back({x, y});
+            }
+        }
+    }
+    ASSERT_TRUE(SelectFoodPosition(out, 3, 3, body_almost_full, MakeSequenceFn({0}), MakeSequenceFn({0}), 5));
+    ASSERT_EQ(out.x, 2);
+    ASSERT_EQ(out.y, 2);
+}
+
+void test_random_attempts_do_not_exceed_bound()
+{
+    int call_count = 0;
+    RandomCoordFn rx = [&call_count](int) { call_count++; return 0; };
+    RandomCoordFn ry = [](int) { return 0; };
+    std::vector<GridPoint> body = {{0, 0}};
+    GridPoint out{};
+    SelectFoodPosition(out, 5, 5, body, rx, ry, 4);
+    ASSERT_EQ(call_count, 4);
+}
+
+void test_negative_grid_dimensions_return_false()
+{
+    std::vector<GridPoint> body = {};
+    GridPoint out{};
+    ASSERT_FALSE(SelectFoodPosition(out, -5, -5, body, MakeSequenceFn({0}), MakeSequenceFn({0}), 3));
+}
+
 int main()
 {
     test_selects_first_safe_random_candidate();
@@ -96,5 +139,8 @@ int main()
     test_invalid_grid_returns_false();
     test_zero_max_attempts_uses_fallback_only();
     test_deterministic_repeat_produces_same_result();
+    test_full_board_various_sizes();
+    test_random_attempts_do_not_exceed_bound();
+    test_negative_grid_dimensions_return_false();
     return test_summary();
 }
