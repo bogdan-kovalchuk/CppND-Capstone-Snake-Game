@@ -1,9 +1,17 @@
 #include "game.h"
+#include "food_placer.h"
 #include <iostream>
 #include <SDL2/SDL.h>
 
+namespace
+{
+constexpr int kMaxFoodPlacementAttempts = 100;
+}
+
 Game::Game(std::size_t grid_width, std::size_t grid_height)
     : snake_(grid_width, grid_height),
+      grid_width_(grid_width),
+      grid_height_(grid_height),
       engine_(dev_()),
       random_w_(0, static_cast<int>(grid_width - 1)),
       random_h_(0, static_cast<int>(grid_height - 1))
@@ -72,18 +80,25 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
 void Game::PlaceFood()
 {
-  int x, y;
-  while (true)
+  std::vector<GridPoint> body_points;
+  body_points.reserve(snake_.body.size() + 1);
+  body_points.push_back({static_cast<int>(snake_.head_x), static_cast<int>(snake_.head_y)});
+  for (auto const &seg : snake_.body)
   {
-    x = random_w_(engine_);
-    y = random_h_(engine_);
-    // Check that the location is not occupied by a snake item before placing food.
-    if (!snake_.SnakeCell(x, y))
-    {
-      food_.x = x;
-      food_.y = y;
-      return;
-    }
+    body_points.push_back({seg.x, seg.y});
+  }
+
+  RandomCoordFn random_x = [this](int) { return random_w_(engine_); };
+  RandomCoordFn random_y = [this](int) { return random_h_(engine_); };
+
+  GridPoint selected{};
+  food_valid_ = SelectFoodPosition(selected, static_cast<int>(grid_width_),
+                                   static_cast<int>(grid_height_), body_points,
+                                   random_x, random_y, kMaxFoodPlacementAttempts);
+  if (food_valid_)
+  {
+    food_.x = selected.x;
+    food_.y = selected.y;
   }
 }
 
@@ -98,13 +113,19 @@ void Game::Update()
   int new_y = static_cast<int>(snake_.head_y);
 
   // Check if there's food over here
-  if (food_.x == new_x && food_.y == new_y)
+  if (food_valid_ && food_.x == new_x && food_.y == new_y)
   {
     score++;
     PlaceFood();
     // Grow snake and increase speed.
     snake_.GrowBody();
     snake_.speed += 0.005;
+  }
+
+  if (!food_valid_)
+  {
+    // No legal cell remains for food: the snake has filled the board.
+    snake_.alive = false;
   }
 }
 

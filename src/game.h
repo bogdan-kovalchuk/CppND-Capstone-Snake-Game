@@ -22,8 +22,12 @@ public:
 private:
   Snake snake_;
   SDL_Point food_;
+  bool food_valid_{false};
   Button play_pause_button_;
   TickGuard pause_state_;
+
+  std::size_t grid_width_;
+  std::size_t grid_height_;
 
   std::random_device dev_;
   std::mt19937 engine_;
