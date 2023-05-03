@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <SDL2/SDL.h>
+#include "growth_tracker.h"
 
 class Snake
 {
@@ -39,7 +40,7 @@ private:
   void UpdateHead();
   void UpdateBody(SDL_Point &current_cell, SDL_Point &prev_cell);
 
-  bool growing_{false};
+  GrowthTracker growth_;
   int grid_width_;
   int grid_height_;
 };
