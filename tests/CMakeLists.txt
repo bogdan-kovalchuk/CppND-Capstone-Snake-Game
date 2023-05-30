@@ -48,6 +48,13 @@ add_executable(test_update_guard
 )
 target_include_directories(test_update_guard PRIVATE ../src ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_executable(test_snake_state
+    test_snake_state.cpp
+    ../src/snake_state.cpp
+    ../src/collision.cpp
+)
+target_include_directories(test_snake_state PRIVATE ../src ${CMAKE_CURRENT_SOURCE_DIR})
+
 enable_testing()
 add_test(NAME CollisionTests COMMAND test_collision)
 add_test(NAME PauseStateTests COMMAND test_pause_state)
@@ -56,3 +63,4 @@ add_test(NAME GrowthTrackerTests COMMAND test_growth_tracker)
 add_test(NAME FoodSafetyTests COMMAND test_food_safety)
 add_test(NAME ScoreTrackerTests COMMAND test_score_tracker)
 add_test(NAME UpdateGuardTests COMMAND test_update_guard)
+add_test(NAME SnakeStateTests COMMAND test_snake_state)
