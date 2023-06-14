@@ -9,6 +9,7 @@
 #include "snake.h"
 #include "button.h"
 #include "pause_state.h"
+#include "score_tracker.h"
 
 class Game
 {
@@ -34,7 +35,7 @@ private:
   std::uniform_int_distribution<int> random_w_;
   std::uniform_int_distribution<int> random_h_;
 
-  int score{0};
+  ScoreTracker score_tracker_;
 
   void PlaceFood();
   void Update();
