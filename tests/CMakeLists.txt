@@ -76,6 +76,14 @@ add_executable(test_food_placer
 )
 target_include_directories(test_food_placer PRIVATE ../src ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_executable(test_game_lifecycle
+    test_game_lifecycle.cpp
+    ../src/game_lifecycle.cpp
+    ../src/snake_state.cpp
+    ../src/collision.cpp
+)
+target_include_directories(test_game_lifecycle PRIVATE ../src ${CMAKE_CURRENT_SOURCE_DIR})
+
 enable_testing()
 add_test(NAME CollisionTests COMMAND test_collision)
 add_test(NAME PauseStateTests COMMAND test_pause_state)
@@ -88,3 +96,4 @@ add_test(NAME SnakeStateTests COMMAND test_snake_state)
 add_test(NAME GameOutcomeTests COMMAND test_game_outcome)
 add_test(NAME GameValidationTests COMMAND test_game_validation)
 add_test(NAME FoodPlacerTests COMMAND test_food_placer)
+add_test(NAME GameLifecycleTests COMMAND test_game_lifecycle)
