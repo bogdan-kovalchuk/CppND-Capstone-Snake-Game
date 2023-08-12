@@ -4,13 +4,33 @@
 #include "controller.h"
 #include "snake.h"
 #include "button.h"
+#include "direction_rules.h"
 
-void Controller::ChangeDirection(Snake &snake, Snake::Direction input,
-                                 Snake::Direction opposite) const
+namespace
 {
-  if (snake.direction != opposite || snake.size == 1)
+Dir ToDir(Snake::Direction d)
+{
+  switch (d)
+  {
+  case Snake::Direction::kUp:
+    return Dir::kUp;
+  case Snake::Direction::kDown:
+    return Dir::kDown;
+  case Snake::Direction::kLeft:
+    return Dir::kLeft;
+  case Snake::Direction::kRight:
+    return Dir::kRight;
+  }
+  return Dir::kUp;
+}
+}
+
+void Controller::ChangeDirection(Snake &snake, Snake::Direction input) const
+{
+  if (IsValidDirectionChange(ToDir(snake.direction), ToDir(input), snake.size))
+  {
     snake.direction = input;
-  return;
+  }
 }
 
 void Controller::HandleInput(bool &running, bool &restart_requested, Snake &snake,
@@ -67,23 +87,19 @@ void Controller::HandleKeyboardEvent(const SDL_Event &e, Snake &snake, bool &res
     switch (e.key.keysym.sym)
     {
     case SDLK_UP:
-      ChangeDirection(snake, Snake::Direction::kUp,
-                      Snake::Direction::kDown);
+      ChangeDirection(snake, Snake::Direction::kUp);
       break;
 
     case SDLK_DOWN:
-      ChangeDirection(snake, Snake::Direction::kDown,
-                      Snake::Direction::kUp);
+      ChangeDirection(snake, Snake::Direction::kDown);
       break;
 
     case SDLK_LEFT:
-      ChangeDirection(snake, Snake::Direction::kLeft,
-                      Snake::Direction::kRight);
+      ChangeDirection(snake, Snake::Direction::kLeft);
       break;
 
     case SDLK_RIGHT:
-      ChangeDirection(snake, Snake::Direction::kRight,
-                      Snake::Direction::kLeft);
+      ChangeDirection(snake, Snake::Direction::kRight);
       break;
 
     case SDLK_r:

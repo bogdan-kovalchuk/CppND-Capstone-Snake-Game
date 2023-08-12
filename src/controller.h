@@ -13,7 +13,7 @@ public:
 private:
     void HandleMouseEvent(const SDL_Event &e, Button &play_pause_button) const;
     void HandleKeyboardEvent(const SDL_Event &e, Snake &snake, bool &restart_requested) const;
-    void ChangeDirection(Snake &snake, Snake::Direction input, Snake::Direction opposite) const;
+    void ChangeDirection(Snake &snake, Snake::Direction input) const;
 };
 
 #endif
