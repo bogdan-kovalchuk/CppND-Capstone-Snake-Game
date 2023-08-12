@@ -16,6 +16,8 @@ public:
     kRight
   };
 
+  static constexpr float kInitialSpeed = 0.1f;
+
   Snake(int grid_width, int grid_height)
       : grid_width_(grid_width),
         grid_height_(grid_height),
@@ -26,10 +28,11 @@ public:
 
   void GrowBody();
   bool SnakeCell(int x, int y);
+  void Reset();
 
   Direction direction = Direction::kUp;
 
-  float speed{0.1f};
+  float speed{kInitialSpeed};
   int size{1};
   bool alive{true};
   float head_x;

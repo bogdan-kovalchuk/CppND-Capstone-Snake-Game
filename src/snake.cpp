@@ -1,5 +1,6 @@
 #include "snake.h"
 #include "collision.h"
+#include "game_lifecycle.h"
 #include <cmath>
 #include <iostream>
 
@@ -78,6 +79,19 @@ void Snake::UpdateBody(SDL_Point &current_head_cell, SDL_Point &prev_head_cell)
 }
 
 void Snake::GrowBody() { growth_.AddGrowth(); }
+
+void Snake::Reset()
+{
+  GridPoint initial = ComputeInitialHead(grid_width_, grid_height_);
+  head_x = static_cast<float>(initial.x);
+  head_y = static_cast<float>(initial.y);
+  body.clear();
+  size = 1;
+  alive = true;
+  direction = Direction::kUp;
+  speed = kInitialSpeed;
+  growth_.Reset();
+}
 
 // Inefficient method to check if cell is occupied by snake.
 bool Snake::SnakeCell(int x, int y)

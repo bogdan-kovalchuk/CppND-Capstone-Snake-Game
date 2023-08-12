@@ -131,3 +131,11 @@ void Game::Update()
 
 int Game::GetScore() const { return score_tracker_.GetScore(); }
 int Game::GetSize() const { return snake_.size; }
+
+void Game::Restart()
+{
+  snake_.Reset();
+  score_tracker_.Reset();
+  pause_state_.Reset();
+  PlaceFood();
+}
