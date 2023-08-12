@@ -13,7 +13,8 @@ void Controller::ChangeDirection(Snake &snake, Snake::Direction input,
   return;
 }
 
-void Controller::HandleInput(bool &running, Snake &snake, Button &play_pause_button) const
+void Controller::HandleInput(bool &running, bool &restart_requested, Snake &snake,
+                             Button &play_pause_button) const
 {
   SDL_Event e;
   while (SDL_PollEvent(&e))
@@ -25,7 +26,7 @@ void Controller::HandleInput(bool &running, Snake &snake, Button &play_pause_but
     else
     {
       HandleMouseEvent(e, play_pause_button);
-      HandleKeyboardEvent(e, snake);
+      HandleKeyboardEvent(e, snake, restart_requested);
     }
   }
 }
@@ -58,7 +59,7 @@ void Controller::HandleMouseEvent(const SDL_Event &e, Button &play_pause_button)
   }
 }
 
-void Controller::HandleKeyboardEvent(const SDL_Event &e, Snake &snake) const
+void Controller::HandleKeyboardEvent(const SDL_Event &e, Snake &snake, bool &restart_requested) const
 {
   // Check if keyboard event happened
   if (e.type == SDL_KEYDOWN)
@@ -83,6 +84,10 @@ void Controller::HandleKeyboardEvent(const SDL_Event &e, Snake &snake) const
     case SDLK_RIGHT:
       ChangeDirection(snake, Snake::Direction::kRight,
                       Snake::Direction::kLeft);
+      break;
+
+    case SDLK_r:
+      restart_requested = true;
       break;
     }
   }

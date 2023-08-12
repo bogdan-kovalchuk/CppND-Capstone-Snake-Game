@@ -28,14 +28,21 @@ void Game::Run(Controller const &controller, Renderer &renderer,
   Uint32 frame_duration;
   int frame_count = 0;
   bool running = true;
+  bool restart_requested = false;
   ButtonState prev_button_state = play_pause_button_.GetState();
 
   while (running)
   {
     frame_start = SDL_GetTicks();
+    restart_requested = false;
 
     // Input, Update, Render - the main game loop.
-    controller.HandleInput(running, snake_, play_pause_button_);
+    controller.HandleInput(running, restart_requested, snake_, play_pause_button_);
+
+    if (restart_requested && !snake_.alive)
+    {
+      Restart();
+    }
 
     ButtonState current_button_state = play_pause_button_.GetState();
     if (current_button_state != prev_button_state)
