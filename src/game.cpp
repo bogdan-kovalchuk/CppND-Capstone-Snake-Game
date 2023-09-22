@@ -6,15 +6,20 @@
 namespace
 {
 constexpr int kMaxFoodPlacementAttempts = 100;
+
+std::size_t ClampGridDimension(std::size_t value)
+{
+  return value > 0 ? value : 1;
+}
 }
 
 Game::Game(std::size_t grid_width, std::size_t grid_height)
-    : snake_(grid_width, grid_height),
-      grid_width_(grid_width),
-      grid_height_(grid_height),
+    : snake_(ClampGridDimension(grid_width), ClampGridDimension(grid_height)),
+      grid_width_(ClampGridDimension(grid_width)),
+      grid_height_(ClampGridDimension(grid_height)),
       engine_(dev_()),
-      random_w_(0, static_cast<int>(grid_width - 1)),
-      random_h_(0, static_cast<int>(grid_height - 1))
+      random_w_(0, static_cast<int>(ClampGridDimension(grid_width) - 1)),
+      random_h_(0, static_cast<int>(ClampGridDimension(grid_height) - 1))
 {
   PlaceFood();
 }
