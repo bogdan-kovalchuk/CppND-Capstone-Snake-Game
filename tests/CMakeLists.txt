@@ -55,6 +55,12 @@ add_executable(test_snake_state
 )
 target_include_directories(test_snake_state PRIVATE ../src ${CMAKE_CURRENT_SOURCE_DIR})
 
+add_executable(test_game_outcome
+    test_game_outcome.cpp
+    ../src/game_outcome.cpp
+)
+target_include_directories(test_game_outcome PRIVATE ../src ${CMAKE_CURRENT_SOURCE_DIR})
+
 enable_testing()
 add_test(NAME CollisionTests COMMAND test_collision)
 add_test(NAME PauseStateTests COMMAND test_pause_state)
@@ -64,3 +70,4 @@ add_test(NAME FoodSafetyTests COMMAND test_food_safety)
 add_test(NAME ScoreTrackerTests COMMAND test_score_tracker)
 add_test(NAME UpdateGuardTests COMMAND test_update_guard)
 add_test(NAME SnakeStateTests COMMAND test_snake_state)
+add_test(NAME GameOutcomeTests COMMAND test_game_outcome)
