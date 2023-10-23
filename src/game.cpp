@@ -1,5 +1,6 @@
 #include "game.h"
 #include "food_placer.h"
+#include "game_validation.h"
 #include <iostream>
 #include <SDL2/SDL.h>
 
@@ -127,6 +128,16 @@ void Game::Update()
 
   int new_x = static_cast<int>(snake_.head_x);
   int new_y = static_cast<int>(snake_.head_y);
+
+  // Safety net: wrap-around motion should always keep the head on the grid.
+  GridPoint head{new_x, new_y};
+  GameValidation validation = ValidateGameState(
+      head, {food_.x, food_.y}, {}, static_cast<int>(grid_width_), static_cast<int>(grid_height_));
+  if (!validation.grid_valid || !validation.snake_on_grid)
+  {
+    snake_.alive = false;
+    return;
+  }
 
   // Check if there's food over here
   if (food_valid_ && food_.x == new_x && food_.y == new_y)
