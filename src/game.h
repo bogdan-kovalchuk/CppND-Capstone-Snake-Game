@@ -10,6 +10,7 @@
 #include "button.h"
 #include "pause_state.h"
 #include "score_tracker.h"
+#include "update_guard.h"
 
 class Game
 {
@@ -27,6 +28,7 @@ private:
   bool food_valid_{false};
   Button play_pause_button_;
   TickGuard pause_state_;
+  UpdateGuard update_guard_;
 
   std::size_t grid_width_;
   std::size_t grid_height_;

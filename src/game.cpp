@@ -58,9 +58,13 @@ void Game::Run(Controller const &controller, Renderer &renderer,
 
     pause_state_.Tick();
 
-    if (pause_state_.IsRunning())
+    update_guard_.SetAlive(snake_.alive);
+    update_guard_.SetPaused(pause_state_.IsPaused());
+    update_guard_.RequestUpdate();
+    if (update_guard_.ShouldUpdate())
     {
       Update();
+      update_guard_.ClearPending();
     }
 
     renderer.Render(snake_, food_, play_pause_button_);
@@ -149,5 +153,6 @@ void Game::Restart()
   snake_.Reset();
   score_tracker_.Reset();
   pause_state_.Reset();
+  update_guard_.Reset();
   PlaceFood();
 }
