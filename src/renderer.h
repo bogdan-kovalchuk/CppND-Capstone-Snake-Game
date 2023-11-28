@@ -17,7 +17,7 @@ public:
   ~Renderer();
 
   void Render(Snake const snake, SDL_Point const &food, Button &play_pause_button);
-  void UpdateWindowTitle(int score, int fps);
+  void UpdateWindowTitle(int score, int high_score, int fps);
 
 private:
   std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> sdl_window_;
