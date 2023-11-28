@@ -1,4 +1,5 @@
 #include "test_helpers.h"
+#include "button_state.h"
 #include "game_lifecycle.h"
 
 void test_initial_head_center_even_grid()
@@ -66,6 +67,18 @@ void test_repeated_reset_calls_are_deterministic()
     ASSERT_TRUE(SnapshotsEqual(a, b));
 }
 
+void test_restart_resets_button_state()
+{
+    ButtonStateModel button_state;
+    ASSERT_TRUE(button_state.GetState() == NORMAL);
+
+    button_state.ChangeState();
+    ASSERT_TRUE(button_state.GetState() == PRESSED);
+
+    button_state.Reset();
+    ASSERT_TRUE(button_state.GetState() == NORMAL);
+}
+
 int main()
 {
     test_initial_head_center_even_grid();
@@ -77,5 +90,6 @@ int main()
     test_reset_snapshot_invalid_for_zero_grid();
     test_reset_snapshot_invalid_for_negative_grid();
     test_repeated_reset_calls_are_deterministic();
+    test_restart_resets_button_state();
     return test_summary();
 }

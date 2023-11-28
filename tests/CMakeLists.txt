@@ -90,6 +90,7 @@ add_executable(test_game_simulation
     ../src/direction_rules.cpp
     ../src/food_placer.cpp
     ../src/food_safety.cpp
+    ../src/game_lifecycle.cpp
     ../src/game_outcome.cpp
     ../src/growth_tracker.cpp
     ../src/score_tracker.cpp

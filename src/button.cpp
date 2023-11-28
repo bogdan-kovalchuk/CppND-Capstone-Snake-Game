@@ -32,7 +32,7 @@ void Button::Render(SDL_Renderer *sdl_renderer)
     SDL_Rect dstrect = {position_.x, position_.y, button_dimensions_.h, button_dimensions_.w};
 
     SDL_Texture *texture = nullptr;
-    if (button_state_ == NORMAL)
+    if (button_state_.GetState() == NORMAL)
     {
         texture = SDL_CreateTextureFromSurface(sdl_renderer, surface_normal_);
     }
@@ -46,19 +46,17 @@ void Button::Render(SDL_Renderer *sdl_renderer)
 
 void Button::ChangeState()
 {
-    if (button_state_ == NORMAL)
-    {
-        button_state_ = PRESSED;
-    }
-    else
-    {
-        button_state_ = NORMAL;
-    }
+    button_state_.ChangeState();
+}
+
+void Button::Reset()
+{
+    button_state_.Reset();
 }
 
 ButtonState Button::GetState() const
 {
-    return button_state_;
+    return button_state_.GetState();
 }
 
 ButtonDimensions Button::GetButtonDimensions() const

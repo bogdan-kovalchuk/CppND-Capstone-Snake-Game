@@ -7,11 +7,7 @@
 #include <vector>
 #include <iostream>
 
-enum ButtonState
-{
-    NORMAL = 0,
-    PRESSED = 1
-};
+#include "button_state.h"
 
 struct ButtonDimensions
 {
@@ -29,6 +25,7 @@ public:
 
     // Change the state when the button is pressed
     void ChangeState();
+    void Reset();
 
     ButtonState GetState() const;
     ButtonDimensions GetButtonDimensions() const;
@@ -50,7 +47,7 @@ private:
     // Top left position set by default
     SDL_Point position_ = {15, 15};
 
-    ButtonState button_state_ = NORMAL;
+    ButtonStateModel button_state_;
     ButtonDimensions button_dimensions_ = {0, 0};
 
     // Surfaces to create textures for play/pause button

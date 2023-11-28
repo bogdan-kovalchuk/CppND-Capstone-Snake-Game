@@ -165,5 +165,6 @@ void Game::Restart()
   score_tracker_.Reset();
   pause_state_.Reset();
   update_guard_.Reset();
+  play_pause_button_.Reset();
   PlaceFood();
 }

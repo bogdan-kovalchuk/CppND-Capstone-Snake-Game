@@ -2,6 +2,7 @@
 #include "collision.h"
 #include "direction_rules.h"
 #include "food_placer.h"
+#include "game_lifecycle.h"
 #include "game_outcome.h"
 #include "growth_tracker.h"
 #include "score_tracker.h"
@@ -32,18 +33,24 @@ struct ScriptStep
     GridPoint next_food;
 };
 
-} // namespace
-
-void test_scripted_run_tracks_score_growth_and_snapshot_invariants()
+struct GameResult
 {
-    GridPoint head{3, 3};
+    GridPoint head;
+    int size;
+    int score;
+    std::size_t body_size;
+};
+
+GameResult RunScriptedGame(GridPoint start_head)
+{
+    GridPoint head = start_head;
     std::vector<GridPoint> body;
     int size = 1;
     bool alive = true;
     Dir direction = Dir::kRight;
     GrowthTracker growth;
     ScoreTracker score;
-    GridPoint food{4, 3};
+    GridPoint food{start_head.x + 1, start_head.y};
 
     std::vector<ScriptStep> steps = {
         {Dir::kRight, {0, 0}},
@@ -84,13 +91,45 @@ void test_scripted_run_tracks_score_growth_and_snapshot_invariants()
         ASSERT_TRUE(IsSnapshotConsistent(snap));
     }
 
-    // First step eats the food and reverses direction (allowed at size <= 2);
+    return GameResult{head, size, score.GetScore(), body.size()};
+}
+
+} // namespace
+
+void test_scripted_run_tracks_score_growth_and_snapshot_invariants()
+{
+    // The script eats the food and reverses direction (allowed at size <= 2);
     // the reversal safely retraces the single trailing segment.
-    ASSERT_EQ(head.x, 3);
-    ASSERT_EQ(head.y, 3);
-    ASSERT_EQ(size, 2);
-    ASSERT_EQ(score.GetScore(), 1);
-    ASSERT_EQ(static_cast<int>(body.size()), 1);
+    GameResult result = RunScriptedGame(GridPoint{3, 3});
+    ASSERT_EQ(result.head.x, 3);
+    ASSERT_EQ(result.head.y, 3);
+    ASSERT_EQ(result.size, 2);
+    ASSERT_EQ(result.score, 1);
+    ASSERT_EQ(static_cast<int>(result.body_size), 1);
+}
+
+void test_reset_replays_scripted_game_deterministically()
+{
+    constexpr int grid_width = 8;
+    constexpr int grid_height = 6;
+    SnakeSnapshot reset = ComputeResetSnapshot(grid_width, grid_height);
+    ASSERT_TRUE(IsResetSnapshotValid(reset, grid_width, grid_height));
+
+    GameResult first_run = RunScriptedGame(reset.head);
+    reset = ComputeResetSnapshot(grid_width, grid_height);
+    GameResult second_run = RunScriptedGame(reset.head);
+
+    ASSERT_EQ(first_run.head.x, 4);
+    ASSERT_EQ(first_run.head.y, 3);
+    ASSERT_EQ(first_run.size, 2);
+    ASSERT_EQ(first_run.score, 1);
+    ASSERT_EQ(static_cast<int>(first_run.body_size), 1);
+    ASSERT_EQ(second_run.head.x, first_run.head.x);
+    ASSERT_EQ(second_run.head.y, first_run.head.y);
+    ASSERT_EQ(second_run.size, first_run.size);
+    ASSERT_EQ(second_run.score, first_run.score);
+    ASSERT_EQ(static_cast<int>(second_run.body_size),
+              static_cast<int>(first_run.body_size));
 }
 
 void test_collision_leads_to_terminal_outcome()
@@ -139,6 +178,7 @@ void test_food_placer_after_scripted_eat_avoids_body()
 int main()
 {
     test_scripted_run_tracks_score_growth_and_snapshot_invariants();
+    test_reset_replays_scripted_game_deterministically();
     test_collision_leads_to_terminal_outcome();
     test_food_placer_after_scripted_eat_avoids_body();
     return test_summary();
