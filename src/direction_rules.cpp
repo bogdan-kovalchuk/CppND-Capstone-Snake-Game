@@ -26,7 +26,7 @@ bool IsValidDirectionChange(Dir current, Dir requested, int snake_size)
     {
         return false;
     }
-    if (IsOpposite(current, requested) && snake_size > 1)
+    if (IsOpposite(current, requested) && (snake_size < 1 || snake_size > 2))
     {
         return false;
     }
